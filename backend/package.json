@@ -1,0 +1,26 @@
+{
+  "name": "violette_backend",
+  "version": "0.0.0",
+  "description": "backend of violette project",
+  "main": "./server.js",
+  "scripts": {
+    "test": "node server.js",
+    "dev": "node-dev ./"
+  },
+  "keywords": [
+    "violette",
+    "database",
+    "express",
+    "graphql"
+  ],
+  "author": "baitieyi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-graphql": "^0.8.0",
+    "express-mysql-session": "^2.1.0",
+    "express-session": "^1.16.1",
+    "graphql": "^14.3.0",
+    "node-dev": "^3.1.3"
+  }
+}
