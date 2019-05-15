@@ -16,6 +16,7 @@
   "author": "baitieyi",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
     "express-graphql": "^0.8.0",
     "express-mysql-session": "^2.1.0",
