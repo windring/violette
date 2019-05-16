@@ -1,3 +1,4 @@
 /node_modules
 /config/mysql.js
 /config/rsa.js
+package-lock.json

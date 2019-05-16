@@ -22,6 +22,7 @@
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.16.1",
     "graphql": "^14.3.0",
+    "mysql": "^2.17.1",
     "node-dev": "^3.1.3"
   }
 }
