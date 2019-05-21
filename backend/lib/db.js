@@ -18,7 +18,7 @@ db.query = function (sql) {
   return new Promise((resolve, reject) => {
     pool.query(sql, (e, r, f) => {
       if (e) reject(e);
-      console.log(e ,r ,f);
+      resolve(r);
     });
   });
 };
