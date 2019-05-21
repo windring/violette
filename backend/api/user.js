@@ -2,6 +2,7 @@ const { privateKey } = require('../config/rsa');
 const crypto = require('crypto');
 const graphqlHTTP = require('express-graphql');
 const { buildSchema } = require('graphql');
+const { format } = require('mysql');
 const db = require('../lib/db');
 
 const schema = buildSchema(`
@@ -34,10 +35,18 @@ const root = {
   helloworld () {
     return new User(1,1,1,1);
   },
-  signup (args) {
+  async signup (args, req) {
+    if (req.session.login === true) {
+      return new User(req.session.uid, req.session.nickname, '请先退出登录',-1);
+    }
     try {
       const buffer = Buffer.from(args.password, 'base64');
       const hashPass = crypto.privateDecrypt(privateKey, buffer).toString('utf-8');
+      try{
+        await db.query(format('INSERT INTO user (nickname, password) VALUES (?, ?)', [args.nickname, hashPass]));
+      }catch(e){
+        return new User(undefined, args.nickname, e.toString(), -1);
+      }
       return new User(undefined, args.nickname, `try login ${args.nickname} with hash password ${hashPass}`, 1);
     }catch(e){
       return new User(undefined, args.nickname, e.toString(), -1);

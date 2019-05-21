@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS user;
 CREATE TABLE user (
-  uid INT,
-  nickname VARCHAR(41),
+  uid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nickname VARCHAR(41) UNIQUE KEY NOT NULL,
   email VARCHAR(41),
   createDate TIMESTAMP,
-  password TEXT,
+  password TEXT NOT NULL,
   status INT
 );
 
@@ -27,7 +27,8 @@ CREATE TABLE comment(
   content TEXT,
   date TIMESTAMP,
   status INT,
-  FOREIGN KEY (uid,touid) REFERENCES user(uid,uid),
+  FOREIGN KEY (uid) REFERENCES user(uid),
+  FOREIGN KEY (uid) REFERENCES user(uid),
   FOREIGN KEY (pid) REFERENCES post(pid)
 );
 
@@ -63,5 +64,3 @@ CREATE TABLE violog(
   date TIMESTAMP,
   lid INT PRIMARY KEY NOT NULL AUTO_INCREMENT
 );
-  
-  
