@@ -131,6 +131,8 @@ export default {
       if (ret.helloworld.code === 1) {
         this.signload = 2
       }
+      const list = await api.postlist()
+      console.log(list)
     });
   }
 };

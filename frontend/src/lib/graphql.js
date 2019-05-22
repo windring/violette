@@ -69,4 +69,14 @@ api.newpost = (content) => {
       content
     })
 }
+api.postlist = () => {
+  return gr(origin,
+    `{
+      postlist{
+        pid,
+        uid,
+        content
+      }
+    }`)
+}
 export default api

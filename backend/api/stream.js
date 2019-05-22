@@ -19,6 +19,12 @@ const rootValue = {
       const post = await db.query(format('SELECT pid,user.uid AS uid,nickname,content FROM post JOIN user ON post.uid=user.uid WHERE post.uid = ? ORDER BY pid DESC', [req.session.uid]));
       return new Post(post[0].pid, post[0].uid, post[0].nickname, post[0].content);
     }
+  },
+  async postlist (args, req) {
+    console.log('hhh')
+    const list = await db.query(format('SELECT * FROM post ORDER BY pid'));
+    console.log(list);
+    return list;
   }
 };
 module.exports = rootValue;

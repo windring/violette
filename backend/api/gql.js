@@ -19,6 +19,6 @@ type Mutation {
 }
 type Query {
   helloworld: User,
-  list: [Post]
+  postlist: [Post]
 }
 `;
