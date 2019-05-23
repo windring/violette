@@ -10,7 +10,8 @@
   "dependencies": {
     "element-ui": "^2.3.4",
     "graphql-request": "^1.8.2",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-avatar": "^2.1.7"
   },
   "engines": {
     "node": ">=6"

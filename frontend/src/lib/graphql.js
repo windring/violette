@@ -31,7 +31,8 @@ api.signin = (nickname, password) => {
         uid,
         nickname,
         message,
-        code
+        code,
+        role
       }
     }`, {
       nickname,
@@ -48,13 +49,14 @@ api.logout = () => {
     }`)
 }
 api.helloworld = () => {
-  return gr(origin, 
+  return gr(origin,
     `{
       helloworld{
         uid,
         nickname,
         message,
-        code
+        code,
+        role
       }
     }`)
 }
@@ -75,8 +77,45 @@ api.postlist = () => {
       postlist{
         pid,
         uid,
-        content
+        content,
+        nickname,
+        date,
+        commentlist{
+          cid,
+          uid,
+          touid,
+          nickname,
+          tonickname,
+          date,
+          content
+        }
       }
     }`)
+}
+api.newcomment = (content, touid, pid) => {
+  return gr(origin,
+    `mutation($content: String, $touid: Int, $pid: Int){
+      newcomment(content: $content, touid: $touid, pid: $pid)
+    }`, {
+      content,
+      touid,
+      pid
+    })
+}
+api.banpost = (pid) => {
+  return gr(origin,
+    `mutation($pid: Int){
+      banpost(pid: $pid)
+    }`, {
+      pid
+    })
+}
+api.bancomment = (cid) => {
+  return gr(origin,
+    `mutation($cid: Int){
+      bancomment(cid: $cid)
+    }`, {
+      cid
+    })
 }
 export default api

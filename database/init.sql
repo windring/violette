@@ -11,7 +11,8 @@ CREATE TABLE user (
   email VARCHAR(41),
   createDate TIMESTAMP,
   password TEXT NOT NULL,
-  status INT
+  status INT,
+  role INT NOT NULL DEFAULT 1 COMMENT 'normal: 1, root: 0'
 );
 
 CREATE TABLE post(
@@ -29,10 +30,10 @@ CREATE TABLE comment(
   uid INT NOT NULL,
   touid INT NOT NULL,
   content TEXT,
-  date TIMESTAMP,
-  status INT,
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status INT DEFAULT 1,
   FOREIGN KEY (uid) REFERENCES user(uid),
-  FOREIGN KEY (uid) REFERENCES user(uid),
+  FOREIGN KEY (touid) REFERENCES user(uid),
   FOREIGN KEY (pid) REFERENCES post(pid)
 );
 
@@ -65,3 +66,5 @@ CREATE TABLE violog(
   date TIMESTAMP,
   lid INT PRIMARY KEY NOT NULL AUTO_INCREMENT
 );
+
+INSERT INTO user (nickname,password, role) VALUES ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 0); # nickname: admin, password: admin

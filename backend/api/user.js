@@ -4,18 +4,19 @@ const { format } = require('mysql');
 const db = require('../lib/db');
 
 class User {
-  constructor (uid, nickname, message, code) {
+  constructor (uid, nickname, message, code, role) {
     this.uid = uid;
     this.nickname = nickname;
     this.message = message;
     this.code = code;
+    this.role = role;
   }
 }
 
 const rootValue = {
   helloworld (args, req) {
     if (req.session && req.session.login === true) {
-      return new User(req.session.uid, req.session.nickname, '已经登录', 1);
+      return new User(req.session.uid, req.session.nickname, '已经登录', 1, req.session.role);
     }
     return new User(undefined, undefined, '未登录', -1);
   },
@@ -40,12 +41,12 @@ const rootValue = {
   },
   async signin(args, req) {
     if (req.session.login === true) {
-      return new User(undefined, args.nickname, '已经记录', 1);
+      return new User(req.session.uid, req.session.nickname, '已经记录', 1, req.session.role);
     }
     try{
       const buffer = Buffer.from(args.password, 'base64');
       const hashPass = crypto.privateDecrypt(privateKey, buffer).toString('utf-8');
-      let ret = await db.query(format('SELECT uid, nickname FROM user WHERE nickname = ? and password = ?', [args.nickname, hashPass]));
+      let ret = await db.query(format('SELECT uid, nickname, role FROM user WHERE nickname = ? and password = ?', [args.nickname, hashPass]));
       if(ret.length === 0)throw '用户名或密码不正确';
       ret = ret[0]
       const mksession = await new Promise((resolve, reject) => {
@@ -56,11 +57,12 @@ const rootValue = {
             req.session.login = true;
             req.session.nickname = ret.nickname
             req.session.uid = ret.uid
+            req.session.role = ret.role
             resolve('记录成功');
           }
         });
       });
-      return new User(ret.uid, ret.nickname, mksession, 1);
+      return new User(ret.uid, ret.nickname, mksession, 1, ret.role);
     }catch(e){
       return new User(undefined, args.nickname, e, -1);
     }
