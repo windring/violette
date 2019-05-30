@@ -19,7 +19,7 @@ J7EHqJ6DgjtIkZlf5HQDhjCYV1T3drYYLYr0Tl//XIEHTWwn/tioJb3c67qChbf8
 rSNI6B4dP2serbA6MQJAM3unD24i8krvZeaFvod6nNGs4SvuivObGjF5EewsqREc
 Rpcqisuiw7JFE8QfKMSiY7Gr8K+epylY0SDeQjO7uA==
 -----END RSA PRIVATE KEY-----`;
-export default {
+module.exports = {
   publicKey,
   privateKey
 };
