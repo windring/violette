@@ -4,3 +4,4 @@ dist/
 npm-debug.log
 .idea
 /src/config/rsa.js
+/src/config/url.js
