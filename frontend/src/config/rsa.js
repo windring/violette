@@ -1,0 +1,9 @@
+const publicKey=`-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDUr9DEJLqfJM1uk2IYDErR3ioB
+bIeqK5Gs5BZzVducda562tkotpMUj9ULZ2vHNXi9+yIoM3e0Tyen3MO6E82nYZ2f
+tiYAZkbs/zcSHjMAJqAOnwViEtPsPaOclQaZ5XvQxov9TT0/EJUxXL5vzOgpdDp5
+Wh6jfy8GEuCVhFdQQQIDAQAB
+-----END PUBLIC KEY-----`;
+export {
+  publicKey,
+};
