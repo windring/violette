@@ -1,10 +1,14 @@
-import { request as gr } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import crypto from 'crypto'
 import Key from '../config/rsa.js'
 
-const origin = 'http://localhost:4000/graphql'
+const origin = 'http://123.57.61.222:4000/graphql'
 const api = {}
 const publicKey = Key.publicKey
+
+const gr = new GraphQLClient(origin, {
+  credentials: 'include'
+})
 
 api.signup = (nickname, password) => {
   let hsh = crypto.createHash('sha256').update(password).digest().toString('base64')

@@ -10,7 +10,7 @@ module.exports = (options = {}) => ({
     index: './src/main.js'
   },
   output: {
-    path: resolve(__dirname, 'dist'),
+    path: '/var/www/html',
     filename: options.dev ? '[name].js' : '[name].js?[chunkhash]',
     chunkFilename: '[id].js?[chunkhash]',
     publicPath: options.dev ? '/assets/' : publicPath
@@ -55,8 +55,9 @@ module.exports = (options = {}) => ({
     extensions: ['.js', '.vue', '.json', '.css']
   },
   devServer: {
-    host: '127.0.0.1',
-    port: 8010,
+    host: '0.0.0.0',
+    port: 4001,
+    disableHostCheck: true,
     proxy: {
       '/api/': {
         target: 'http://127.0.0.1:8080',
@@ -70,5 +71,5 @@ module.exports = (options = {}) => ({
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
   },
-  devtool: options.dev ? '#eval-source-map' : '#source-map'
+  // devtool: options.dev ? '#eval-source-map' : '#source-map'
 })
