@@ -2,18 +2,19 @@ import { GraphQLClient } from 'graphql-request'
 import crypto from 'crypto'
 import Key from '../config/rsa.js'
 
-const origin = 'http://123.57.61.222:4000/graphql'
+const origin = 'http://localhost:4000/graphql'
 const api = {}
 const publicKey = Key.publicKey
 
-const gr = new GraphQLClient(origin, {
+const client = new GraphQLClient(origin, {
   credentials: 'include'
-})
+});
+
 
 api.signup = (nickname, password) => {
   let hsh = crypto.createHash('sha256').update(password).digest().toString('base64')
   hsh = crypto.publicEncrypt(publicKey, Buffer.from(hsh)).toString('base64')
-  return gr(origin,
+  return client.request(
     `mutation($nickname: String!,$password: String!){
       signup(nickname: $nickname, password: $password){
         uid,
@@ -29,7 +30,7 @@ api.signup = (nickname, password) => {
 api.signin = (nickname, password) => {
   let hsh = crypto.createHash('sha256').update(password).digest().toString('base64')
   hsh = crypto.publicEncrypt(publicKey, Buffer.from(hsh)).toString('base64')
-  return gr(origin,
+  return client.request(
     `mutation($nickname: String!,$password: String!){
       signin(nickname: $nickname, password: $password){
         uid,
@@ -44,7 +45,7 @@ api.signin = (nickname, password) => {
     })
 }
 api.logout = () => {
-  return gr(origin,
+  return client.request(
     `mutation{
       logout{
         message,
@@ -53,7 +54,7 @@ api.logout = () => {
     }`)
 }
 api.helloworld = () => {
-  return gr(origin,
+  return client.request(
     `{
       helloworld{
         uid,
@@ -65,7 +66,7 @@ api.helloworld = () => {
     }`)
 }
 api.newpost = (content) => {
-  return gr(origin,
+  return client.request(
     `mutation($content: String){
       newpost(content: $content){
         pid
@@ -76,7 +77,7 @@ api.newpost = (content) => {
     })
 }
 api.postlist = () => {
-  return gr(origin,
+  return client.request(
     `{
       postlist{
         pid,
@@ -97,7 +98,7 @@ api.postlist = () => {
     }`)
 }
 api.newcomment = (content, touid, pid) => {
-  return gr(origin,
+  return client.request(
     `mutation($content: String, $touid: Int, $pid: Int){
       newcomment(content: $content, touid: $touid, pid: $pid)
     }`, {
@@ -107,7 +108,7 @@ api.newcomment = (content, touid, pid) => {
     })
 }
 api.banpost = (pid) => {
-  return gr(origin,
+  return client.request(
     `mutation($pid: Int){
       banpost(pid: $pid)
     }`, {
@@ -115,7 +116,7 @@ api.banpost = (pid) => {
     })
 }
 api.bancomment = (cid) => {
-  return gr(origin,
+  return client.request(
     `mutation($cid: Int){
       bancomment(cid: $cid)
     }`, {

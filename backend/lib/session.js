@@ -11,6 +11,5 @@ module.exports = session({
   saveUninitialized: false,
   cookie: {
     maxAge: 5 * 60 * 1000,
-    domain: '123.57.61.222'
   }
 });

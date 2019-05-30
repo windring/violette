@@ -5,7 +5,10 @@ const api = require('./api/index')
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 app.use((req, _, next) => {
   console.log(req.ip);
@@ -16,4 +19,4 @@ app.use(session);
 
 app.use('/graphql', api);
 app.listen(4000);
-console.log('serving on http://localhost:4000/graphql')
+console.log('serving on http://localhost:4000/graphql');
