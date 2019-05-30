@@ -2,3 +2,4 @@
 /config/mysql.js
 /config/rsa.js
 package-lock.json
+/lib/rsa.js

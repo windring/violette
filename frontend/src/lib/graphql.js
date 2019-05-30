@@ -1,10 +1,9 @@
 import { GraphQLClient } from 'graphql-request'
 import crypto from 'crypto'
-import Key from '../config/rsa.js'
+import origin from '../config/url'
+import { publicKey } from '../config/rsa'
 
-const origin = 'http://localhost:4000/graphql'
 const api = {}
-const publicKey = Key.publicKey
 
 const client = new GraphQLClient(origin, {
   credentials: 'include'
