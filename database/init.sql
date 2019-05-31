@@ -44,7 +44,8 @@ CREATE TABLE postattitude(
   date TIMESTAMP,
   attitude INT NOT NULL COMMENT 'support 1, against 2',
   FOREIGN KEY (pid) REFERENCES post(pid),
-  FOREIGN KEY (uid) REFERENCES user(uid)
+  FOREIGN KEY (uid) REFERENCES user(uid),
+  UNIQUE KEY (pid, uid)
 ) CHARSET=utf8mb4;
 
 CREATE TABLE commentattitude(
@@ -54,7 +55,8 @@ CREATE TABLE commentattitude(
   date TIMESTAMP,
   attitude INT NOT NULL COMMENT 'support 1, against 2',
   FOREIGN KEY (cid) REFERENCES comment(cid),
-  FOREIGN KEY (uid) REFERENCES user(uid)
+  FOREIGN KEY (uid) REFERENCES user(uid),
+  UNIQUE KEY (cid, uid)
 ) CHARSET=utf8mb4;
 
 CREATE TABLE violog(

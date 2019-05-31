@@ -2,11 +2,11 @@ const resolve = require('path').resolve
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
+const { VueLoaderPlugin } = require('vue-loader')
 const publicPath = ''
 
 module.exports = (options = {}) => ({
   entry: {
-    vendor: './src/vendor',
     index: './src/main.js'
   },
   output: {
@@ -17,37 +17,46 @@ module.exports = (options = {}) => ({
   },
   module: {
     rules: [{
-        test: /\.vue$/,
-        use: ['vue-loader']
-      },
-      {
-        test: /\.js$/,
-        use: ['babel-loader'],
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 10000
-          }
-        }]
-      }
+      test: /\.vue$/,
+      use: ['vue-loader']
+    },
+    {
+      test: /\.js$/,
+      use: ['babel-loader'],
+      exclude: /node_modules/
+    },
+    {
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader', 'postcss-loader']
+    },
+    {
+      test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+      use: [{
+        loader: 'url-loader',
+        options: {
+          limit: 10000
+        }
+      }]
+    }
     ]
   },
   plugins: [
-    new webpack.optimize.SplitChunksPlugin({
-      names: ['vendor', 'manifest']
-    }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
-    })
+    }),
+    new VueLoaderPlugin()
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          priority: -10
+        }
+      }
+    }
+  },
   resolve: {
     alias: {
       '~': resolve(__dirname, 'src')

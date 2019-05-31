@@ -14,7 +14,8 @@ type Comment {
   tonickname: String,
   date: String,
   content: String,
-  likelist: [Int]
+  likelist: [Int],
+  dislikelist: [Int]
 }
 type Post {
   pid: Int,
@@ -23,7 +24,8 @@ type Post {
   content: String,
   date: String,
   commentlist: [Comment],
-  likelist: [Int]
+  likelist: [Int],
+  dislikelist: [Int]
 }
 type Mutation {
   signup(nickname: String, password: String): User,

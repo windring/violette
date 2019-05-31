@@ -91,8 +91,12 @@ api.postlist = () => {
           nickname,
           tonickname,
           date,
-          content
-        }
+          content,
+          likelist,
+          dislikelist
+        },
+        likelist,
+        dislikelist
       }
     }`)
 }

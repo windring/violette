@@ -3,73 +3,13 @@
     <el-header>
       <el-menu mode="horizontal">
         <el-menu-item>首页</el-menu-item>
-        <el-menu-item>登录</el-menu-item>
+        <el-menu-item @click="about">关于</el-menu-item>
       </el-menu>
     </el-header>
     <el-main>
       <el-row :gutter="20">
-        <el-col :span="12" :offset="6">
-          <el-card v-if="signload === 2">
-            <el-form>
-              <el-form-item>
-                <el-input :autosize="{minRows: 4}" type="textarea" v-model="content"></el-input>
-              </el-form-item>
-              <el-form-item class="no-margin">
-                <el-button @click="newpost">发布</el-button>
-              </el-form-item>
-            </el-form>
-          </el-card>
-          <el-card v-for="(item,index) in list" :key="index" style="margin: 1em 0;">
-            <div slot="header" class="lrflex">
-              <avatar :username="item.nickname" :size="30"></avatar>
-              <span>{{ item.nickname }}</span>
-              <span
-                style="color: #909399;font-size: .4em;"
-              >{{ new Date(1 * item.date).toLocaleString() }}</span>
-              <el-link
-                type="danger"
-                style="float: right;"
-                v-if="isadmin"
-                @click="banpostsumit(item.pid)"
-              >删除</el-link>
-            </div>
-            {{ item.content }}
-            <div class="line margin-top"></div>
-            <el-row v-for="(it,ix) in item.commentlist" :key="ix" style="margin: .3em 0;">
-              <el-col>
-                <el-link type="primary">{{ it.nickname }}</el-link>评论
-                <el-link type="primary">{{ it.tonickname }}</el-link>:
-                <span>{{ it.content }}</span>
-                <el-link
-                  type="danger"
-                  style="float: right;"
-                  v-if="isadmin"
-                  @click="bancommentsubmit(it.cid)"
-                >删除</el-link>
-                <el-link
-                  type="primary"
-                  @click="item.touid = it.uid; item.tonickname = it.nickname;"
-                  style="float: right;"
-                  v-if="signload === 2"
-                >回复</el-link>
-                <div
-                  style="color: #909399;font-size: .4em;float: right;"
-                >{{ new Date(it.date * 1).toLocaleString() }}</div>
-              </el-col>
-            </el-row>
-            <div class="line margin-bottom"></div>
-            <el-row :gutter="20" v-if="signload === 2">
-              <el-col :span="19">
-                <el-input :placeholder="'@' + item.tonickname" v-model="item.newcomment"></el-input>
-              </el-col>
-              <el-col :span="4">
-                <el-button @click="commentsubmit(item.newcomment,item.touid,item.pid)">评论</el-button>
-              </el-col>
-            </el-row>
-          </el-card>
-        </el-col>
-        <el-col :span="5">
-          <el-card v-loading="!signload">
+        <el-col :span="24" :md="6">
+          <el-card v-loading="!signload" class="margin">
             <el-form v-if="signload === 1">
               <el-form-item label="nickname">
                 <el-input v-model="nickname"></el-input>
@@ -99,6 +39,87 @@
             </div>
           </el-card>
         </el-col>
+        <el-col :span="24" :md="12">
+          <el-card v-if="signload === 2" class="margin">
+            <el-form>
+              <el-form-item>
+                <el-input :autosize="{minRows: 4}" type="textarea" v-model="content"></el-input>
+              </el-form-item>
+              <el-form-item class="no-margin">
+                <el-button @click="newpost">发布</el-button>
+              </el-form-item>
+            </el-form>
+          </el-card>
+          <el-card v-for="(item,index) in list" :key="index" class="margin">
+            <div slot="header" class="lrflex">
+              <avatar :username="item.nickname" :size="30"></avatar>
+              <span>{{ item.nickname }}</span>
+              <span
+                style="color: #909399;font-size: .4em;"
+              >{{ new Date(1 * item.date).toLocaleString() }}</span>
+              <el-link
+                type="danger"
+                style="float: right;"
+                v-if="isadmin"
+                @click="banpostsumit(item.pid)"
+              >删除</el-link>
+            </div>
+            {{ item.content }}
+            <div class="line margin-top"></div>
+            <i
+              class="el-icon-caret-top"
+              :class="{'light': item.likelist.indexOf(uid) !== -1}"
+              @click="submitlikepost(item.pid, 1)"
+            >{{ item.likelist.length }}</i>
+            <i
+              class="el-icon-caret-bottom"
+              :class="{'light': item.dislikelist.indexOf(uid) !== -1}"
+              @click="submitlikepost(item.pid, -1)"
+            >{{ item.dislikelist.length }}</i>
+            <div class="line"></div>
+            <el-row v-for="(it,ix) in item.commentlist" :key="ix" style="margin: .3em 0;">
+              <el-col class="lrflex">
+                <el-link type="primary">{{ it.nickname }}</el-link>评论
+                <el-link type="primary">{{ it.tonickname }}</el-link>:
+                <span>{{ it.content }}</span>
+                <el-link
+                  type="danger"
+                  style="float: right;"
+                  v-if="isadmin"
+                  @click="bancommentsubmit(it.cid)"
+                >删除</el-link>
+                <el-link
+                  type="primary"
+                  @click="item.touid = it.uid; item.tonickname = it.nickname;"
+                  style="float: right;"
+                  v-if="signload === 2"
+                >回复</el-link>
+                <i
+                  class="el-icon-caret-top r"
+                  :class="{'light': it.likelist.indexOf(uid) !== -1}"
+                  @click="submitlikecomment(it.cid, 1)"
+                >{{ it.likelist.length }}</i>
+                <i
+                  class="el-icon-caret-bottom r"
+                  :class="{'light': it.dislikelist.indexOf(uid) !== -1}"
+                  @click="submitlikecomment(it.cid, -1)"
+                >{{ it.dislikelist.length }}</i>
+                <div
+                  style="color: #909399;font-size: .4em;float: right;"
+                >{{ new Date(it.date * 1).toLocaleString() }}</div>
+              </el-col>
+            </el-row>
+            <div class="line margin-bottom"></div>
+            <el-row :gutter="20" v-if="signload === 2">
+              <el-col :span="24" :md="19">
+                <el-input class="margin" :placeholder="'@' + item.tonickname" v-model="item.newcomment"></el-input>
+              </el-col>
+              <el-col :span="24" :md="5">
+                <el-button class="margin" @click="commentsubmit(item.newcomment,item.touid,item.pid)">评论</el-button>
+              </el-col>
+            </el-row>
+          </el-card>
+        </el-col>
       </el-row>
     </el-main>
     <el-footer></el-footer>
@@ -117,8 +138,10 @@ export default {
       password: "admin",
       content: "输入发布内容",
       list: [],
+      uid: undefined,
       touid: undefined,
-      role: undefined
+      role: undefined,
+      api: undefined
     };
   },
   computed: {
@@ -127,6 +150,29 @@ export default {
     }
   },
   methods: {
+    about () {
+      this.$alert('\
+        <h3>Lightweight Content Publishing System</h3>\
+        <h3>轻量级的内容发布系统</h3>\
+        <p>star me! <a href="https://github.com/windring/violette" target="_blank">https://github.com/windring/violette</a></p>\
+        <p>给我星星！戳这里👉<a href="https://github.com/windring/violette" target="_blank">https://github.com/windring/violette</a></p>\
+        <p>what to do here? Post, comment, and express your views.</p>\
+        <p>我能做什么？发布内容，评论，表达我的看法。</p>\
+        <i>author: baitieyi@163.com</i>\
+        <br>\
+        <i>org: acliusBackHome</i>\
+        ', 'violette', {
+          dangerouslyUseHTMLString: true
+        });
+    },
+    async submitlikepost (pid, ati) {
+      await api.likepost(pid, ati);
+      this.fresh();
+    },
+    async submitlikecomment (pid, ati) {
+      await api.likecomment(pid, ati);
+      this.fresh();
+    },
     startHacking() {
       this.$notify({
         title: "It works!",
@@ -143,6 +189,7 @@ export default {
           title: "屏蔽文章",
           message: "成功"
         });
+        this.fresh();
       }
     },
     async bancommentsubmit(cid) {
@@ -152,6 +199,7 @@ export default {
           title: "屏蔽评论",
           message: "成功"
         });
+        this.fresh();
       }
     },
     async commentsubmit(content, touid, pid) {
@@ -161,6 +209,7 @@ export default {
           title: "评论",
           message: "评论成功"
         });
+        this.fresh();
       }
     },
     async signin() {
@@ -169,6 +218,9 @@ export default {
         if (ret.signin.code === 1) {
           this.signload = 2;
           this.role = ret.signin.role;
+          this.nickname = ret.signin.nickname;
+          this.uid = Number(ret.signin.uid);
+          this.fresh();
         } else {
           throw ret.signin.message;
         }
@@ -200,6 +252,8 @@ export default {
           throw JSON.stringify(ret, undefined, 2);
         }
         this.signload = 1;
+        this.role = undefined;
+        this.fresh();
       } catch (e) {
         this.$notify.error({
           title: "登出失败",
@@ -214,24 +268,15 @@ export default {
           title: "发布成功",
           message: "第" + ret.newpost.pid + "篇短文"
         });
+        this.fresh();
       } catch (e) {
         this.$notify.error({
           title: "发布失败",
           message: e
         });
       }
-    }
-  },
-  mounted() {
-    this.$nextTick(async () => {
-      const ret = await api.helloworld();
-      console.log(ret);
-      this.signload = 1;
-      if (ret.helloworld.code === 1) {
-        this.signload = 2;
-        this.nickname = ret.helloworld.nickname;
-        this.role = ret.helloworld.role;
-      }
+    },
+    async fresh() {
       const list = await api.postlist();
       this.list = list.postlist.map(i => {
         i.newcomment = "";
@@ -239,6 +284,20 @@ export default {
         i.touid = i.uid;
         return i;
       });
+    }
+  },
+  mounted() {
+    this.$nextTick(async () => {
+      const ret = await api.helloworld();
+      this.api = api;
+      this.signload = 1;
+      if (ret.helloworld.code === 1) {
+        this.signload = 2;
+        this.nickname = ret.helloworld.nickname;
+        this.uid = Number(ret.helloworld.uid);
+        this.role = ret.helloworld.role;
+      }
+      this.fresh();
     });
   }
 };
@@ -253,6 +312,13 @@ body {
   text-align: left;
   word-break: break-all;
   word-wrap: break-word;
+}
+i {
+  margin: 0.3em .4em;
+  cursor: pointer;
+}
+i.light {
+  color: #409eff;
 }
 header {
   padding: 0 !important;
@@ -280,6 +346,12 @@ span {
   width: 100%;
   height: 0;
   border-top: 1px solid #eee;
+}
+.r {
+  float: right;
+}
+.margin {
+  margin: 1em 0;
 }
 .no-margin {
   margin: 0;
