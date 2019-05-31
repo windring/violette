@@ -43,7 +43,7 @@
           <el-card v-if="signload === 2" class="margin">
             <el-form>
               <el-form-item>
-                <el-input :autosize="{minRows: 4}" type="textarea" v-model="content"></el-input>
+                <el-input :autosize="{minRows: 4}" type="textarea" v-model="content" placeholder="输入发布内容"></el-input>
               </el-form-item>
               <el-form-item class="no-margin">
                 <el-button @click="newpost">发布</el-button>
@@ -64,7 +64,7 @@
                 @click="banpostsumit(item.pid)"
               >删除</el-link>
             </div>
-            {{ item.content }}
+            <div class="markdown-body" v-html="md.render(item.content)"></div>
             <div class="line margin-top"></div>
             <i
               class="el-icon-caret-top"
@@ -129,6 +129,7 @@
 <script>
 import Avatar from "vue-avatar";
 import api from "./lib/graphql";
+import MarkdownIt from 'markdown-it';
 export default {
   components: { Avatar },
   data() {
@@ -136,12 +137,13 @@ export default {
       signload: 0,
       nickname: "admin",
       password: "admin",
-      content: "输入发布内容",
+      content: "",
       list: [],
       uid: undefined,
       touid: undefined,
       role: undefined,
-      api: undefined
+      api: undefined,
+      md: undefined,
     };
   },
   computed: {
@@ -288,6 +290,7 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
+      this.md = new MarkdownIt();
       const ret = await api.helloworld();
       this.api = api;
       this.signload = 1;

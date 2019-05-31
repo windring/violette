@@ -22,7 +22,9 @@ import {
   MessageBox
 } from 'element-ui';
 
-import App from './App.vue'
+import 'github-markdown-css';
+
+import App from './App.vue';
 
 Vue.use(Menu);
 Vue.use(MenuItem);
