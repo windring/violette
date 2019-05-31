@@ -13,7 +13,7 @@ CREATE TABLE user (
   password TEXT NOT NULL,
   status INT,
   role INT NOT NULL DEFAULT 1 COMMENT 'normal: 1, root: 0'
-);
+) CHARSET=utf8;
 
 CREATE TABLE post(
   pid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -22,7 +22,7 @@ CREATE TABLE post(
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status INT DEFAULT 1,
   FOREIGN KEY (uid) REFERENCES user (uid)
-);
+) CHARSET=utf8mb4;
 
 CREATE TABLE comment(
   cid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -35,7 +35,7 @@ CREATE TABLE comment(
   FOREIGN KEY (uid) REFERENCES user(uid),
   FOREIGN KEY (touid) REFERENCES user(uid),
   FOREIGN KEY (pid) REFERENCES post(pid)
-);
+) CHARSET=utf8mb4;
 
 CREATE TABLE postattitude(
   paid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -45,7 +45,7 @@ CREATE TABLE postattitude(
   attitude INT NOT NULL COMMENT 'support 1, against 2',
   FOREIGN KEY (pid) REFERENCES post(pid),
   FOREIGN KEY (uid) REFERENCES user(uid)
-);
+) CHARSET=utf8mb4;
 
 CREATE TABLE commentattitude(
   caid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -55,7 +55,7 @@ CREATE TABLE commentattitude(
   attitude INT NOT NULL COMMENT 'support 1, against 2',
   FOREIGN KEY (cid) REFERENCES comment(cid),
   FOREIGN KEY (uid) REFERENCES user(uid)
-);
+) CHARSET=utf8mb4;
 
 CREATE TABLE violog(
   uid INT,
@@ -65,6 +65,6 @@ CREATE TABLE violog(
   action TEXT,
   date TIMESTAMP,
   lid INT PRIMARY KEY NOT NULL AUTO_INCREMENT
-);
+) CHARSET=utf8mb4;
 
 INSERT INTO user (nickname,password, role) VALUES ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 0); # nickname: admin, password: admin
