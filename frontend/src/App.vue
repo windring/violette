@@ -9,7 +9,7 @@
     <el-main>
       <el-row :gutter="20">
         <el-col :span="12" :offset="6">
-          <el-card>
+          <el-card v-if="signload === 2">
             <el-form>
               <el-form-item>
                 <el-input :autosize="{minRows: 4}" type="textarea" v-model="content"></el-input>
@@ -50,6 +50,7 @@
                   type="primary"
                   @click="item.touid = it.uid; item.tonickname = it.nickname;"
                   style="float: right;"
+                  v-if="signload === 2"
                 >回复</el-link>
                 <div
                   style="color: #909399;font-size: .4em;float: right;"

@@ -36,6 +36,10 @@ const rootValue = {
     let list = await db.query(format('SELECT content,nickname,pid,date,user.uid as uid FROM post JOIN user ON post.uid = user.uid WHERE post.status = 1 ORDER BY date DESC'));
     for (let i = 0; i < list.length; i++) {
       list[i].commentlist = await db.query(format('SELECT cid,comment.uid,comment.touid,P.nickname as nickname,Q.nickname as tonickname,comment.date,comment.content FROM comment JOIN user as P ON comment.uid=P.uid JOIN user as Q ON comment.touid=Q.uid WHERE comment.status = 1 AND pid = ? ORDER BY comment.date', [list[i].pid]));
+      list[i].likelist = await db.query(format('SELECT uid FROM postattitude WHERE pid = ?', [list[i].pid]));
+      for (let j = 0; j < list[i].commentlist[j].length; j++) {
+        list[i].commentlist[j].likelist = await db.query(format('SELECT uid FROM commentattitude WHERE cid = ?', list[i].commentlist[j].cid));
+      }
     }
     console.log(list);
     return list;
@@ -60,6 +64,28 @@ const rootValue = {
     }
     const ret = await db.query(format('UPDATE comment SET status = 0 WHERE cid = ?', [args.cid]));
     return 200;
+  },
+  async likecomment(args, req) {
+    if(!req.session || req.session.login !== true) {
+      throw '未登录';
+    }
+    let ret = await db.query(format('SELECT * FROM commentattitude WHERE cid = ? AND uid = ?', [args.cid, req.session.uid]));
+    if (ret.length === 0) {
+      await db.query(format('INSERT INTO commentattitude (cid, uid, attitude) VALUES (?, ?, ?)', [args.cid, req.session.uid, 1]));
+    } else {
+      await db.query(format('UPDATE commentattitude SET attitude = ? WHERE pid = ? AND uid = ?', [args.attitude === ret[0].attitude ? 0 : args.attitude, args.cid, req.session.uid]));
+    }
+  },
+  async likepost(args, req) {
+    if(!req.session || req.session.login !== true) {
+      throw '未登录';
+    }
+    let ret = await db.query(format('SELECT * FROM postattitude WHERE pid = ? AND uid = ?', [args.pid, req.session.uid]));
+    if (ret.length === 0) {
+      await db.query(format('INSERT INTO postattitude (pid, uid, attitude) VALUES (?, ?, ?)', [args.pid, req.session.uid, 1]));
+    } else {
+      await db.query(format('UPDATE postattitude SET attitude = ? WHERE pid = ? AND uid = ?', [args.attitude === ret[0].attitude ? 0 : args.attitude, args.pid, req.session.uid]));
+    }
   }
 };
 module.exports = rootValue;

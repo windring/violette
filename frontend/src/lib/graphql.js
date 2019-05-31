@@ -122,4 +122,24 @@ api.bancomment = (cid) => {
       cid
     })
 }
+api.likepost = (pid, attitude) => {
+  return client.request(
+    `mutation($pid: Int, $attitude: Int){
+      likepost(pid: $pid, attitude: $attitude)
+    }`, {
+      pid,
+      attitude
+    }
+  )
+}
+api.likecomment = (cid, attitude) => {
+  return client.request(
+    `mutation($cid: Int, $attitude: Int){
+      likecomment(cid: $cid, attitude: $attitude)
+    }`, {
+      cid,
+      attitude
+    }
+  )
+}
 export default api

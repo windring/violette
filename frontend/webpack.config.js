@@ -41,7 +41,7 @@ module.exports = (options = {}) => ({
     ]
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
+    new webpack.optimize.SplitChunksPlugin({
       names: ['vendor', 'manifest']
     }),
     new HtmlWebpackPlugin({
@@ -71,5 +71,5 @@ module.exports = (options = {}) => ({
       index: url.parse(options.dev ? '/assets/' : publicPath).pathname
     }
   },
-  // devtool: options.dev ? '#eval-source-map' : '#source-map'
+  devtool: options.dev ? '#eval-source-map' : '#source-map'
 })

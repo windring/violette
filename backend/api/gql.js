@@ -14,14 +14,16 @@ type Comment {
   tonickname: String,
   date: String,
   content: String,
+  likelist: [Int]
 }
 type Post {
   pid: Int,
   uid: Int,
   nickname: String,
   content: String,
-  date: String
-  commentlist: [Comment]
+  date: String,
+  commentlist: [Comment],
+  likelist: [Int]
 }
 type Mutation {
   signup(nickname: String, password: String): User,
@@ -30,7 +32,9 @@ type Mutation {
   newpost(content: String): Post,
   newcomment(content: String, touid: Int, pid: Int): Int,
   banpost(pid: Int): Int,
-  bancomment(cid: Int): Int
+  bancomment(cid: Int): Int,
+  likecomment(cid: Int, attitude: Int): Int,
+  likepost(pid: Int, attitude: Int): Int,
 }
 type Query {
   helloworld: User,
