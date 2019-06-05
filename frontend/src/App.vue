@@ -341,6 +341,7 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  flex-wrap: wrap;
 }
 span {
   margin: 0 0.4em;
