@@ -290,7 +290,9 @@ export default {
   },
   mounted() {
     this.$nextTick(async () => {
-      this.md = new MarkdownIt();
+      this.md = new MarkdownIt({
+        html: true
+      });
       const ret = await api.helloworld();
       this.api = api;
       this.signload = 1;
