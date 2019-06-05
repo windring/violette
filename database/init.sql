@@ -42,7 +42,7 @@ CREATE TABLE postattitude(
   pid INT NOT NULL,
   uid INT NOT NULL,
   date TIMESTAMP,
-  attitude INT NOT NULL COMMENT 'support 1, against 2',
+  attitude INT NOT NULL COMMENT 'support 1, against -1, none 0',
   FOREIGN KEY (pid) REFERENCES post(pid),
   FOREIGN KEY (uid) REFERENCES user(uid),
   UNIQUE KEY (pid, uid)
@@ -53,7 +53,7 @@ CREATE TABLE commentattitude(
   cid INT NOT NULL,
   uid INT NOT NULL,
   date TIMESTAMP,
-  attitude INT NOT NULL COMMENT 'support 1, against 2',
+  attitude INT NOT NULL COMMENT 'support 1, against -1, none 0',
   FOREIGN KEY (cid) REFERENCES comment(cid),
   FOREIGN KEY (uid) REFERENCES user(uid),
   UNIQUE KEY (cid, uid)
