@@ -13,7 +13,7 @@ CREATE TABLE user (
   password TEXT NOT NULL,
   status INT,
   role INT NOT NULL DEFAULT 1 COMMENT 'normal: 1, root: 0'
-) CHARSET=utf8;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE post(
   pid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -22,7 +22,7 @@ CREATE TABLE post(
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status INT DEFAULT 1,
   FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARSET=utf8mb4;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE comment(
   cid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -35,7 +35,7 @@ CREATE TABLE comment(
   FOREIGN KEY (uid) REFERENCES user(uid),
   FOREIGN KEY (touid) REFERENCES user(uid),
   FOREIGN KEY (pid) REFERENCES post(pid)
-) CHARSET=utf8mb4;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE postattitude(
   paid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ CREATE TABLE postattitude(
   FOREIGN KEY (pid) REFERENCES post(pid),
   FOREIGN KEY (uid) REFERENCES user(uid),
   UNIQUE KEY (pid, uid)
-) CHARSET=utf8mb4;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE commentattitude(
   caid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -57,7 +57,7 @@ CREATE TABLE commentattitude(
   FOREIGN KEY (cid) REFERENCES comment(cid),
   FOREIGN KEY (uid) REFERENCES user(uid),
   UNIQUE KEY (cid, uid)
-) CHARSET=utf8mb4;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 CREATE TABLE violog(
   uid INT,
@@ -67,6 +67,6 @@ CREATE TABLE violog(
   action TEXT,
   date TIMESTAMP,
   lid INT PRIMARY KEY NOT NULL AUTO_INCREMENT
-) CHARSET=utf8mb4;
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 INSERT INTO user (nickname,password, role) VALUES ('admin', 'jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=', 0); # nickname: admin, password: admin

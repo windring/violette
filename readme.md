@@ -26,11 +26,13 @@ mysql -u<yourusername> -p<yourpassword> -D<yourdatabase> < database/init.sql
 start backend
 
 ```
+# cd backend
 pm2 --name backend start npm -- run dev
 ```
 
 start frontend
 
 ```
+# cd frontend
 pm2 --name frontend start npm -- run dev
 ```
